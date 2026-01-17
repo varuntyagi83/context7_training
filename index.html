@@ -119,6 +119,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       scroll-snap-align: start;
       position: relative;
       overflow: hidden;
@@ -143,7 +144,13 @@
     }
 
     .slide-title { background: var(--gradient-2); }
-    .slide-title .slide-content { text-align: center; }
+    .slide-title .slide-content { 
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
     .main-title {
       font-size: clamp(3rem, 8vw, 6rem);
@@ -161,6 +168,9 @@
       font-weight: 300;
       color: var(--text-secondary);
       margin-bottom: 3rem;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
     }
 
     .badge {
@@ -702,6 +712,69 @@
       .credential-cards { grid-template-columns: 1fr; }
       .social-links { justify-content: center; }
     }
+
+    /* Code Blocks */
+    .code-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .code-comparison { grid-template-columns: 1fr; }
+    }
+
+    .code-block {
+      background: #1e1e2e;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .code-header {
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .code-header.without { background: rgba(248, 113, 113, 0.1); }
+    .code-header.with { background: rgba(74, 222, 128, 0.1); }
+
+    .code-header-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .code-header.without .code-header-label { color: #f87171; }
+    .code-header.with .code-header-label { color: #4ade80; }
+
+    .code-header-file {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+
+    pre {
+      padding: 1.25rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.8;
+      color: #94a3b8;
+      margin: 0;
+    }
+
+    .code-comment { color: #6b7280; }
+    .code-keyword { color: #c678dd; }
+    .code-string { color: #98c379; }
+    .code-function { color: #61afef; }
+
   </style>
 </head>
 <body>
@@ -715,13 +788,14 @@
       <button class="nav-tab" onclick="goToSlide(4)">Problem</button>
       <button class="nav-tab" onclick="goToSlide(5)">Analogies</button>
       <button class="nav-tab" onclick="goToSlide(6)">Example</button>
-      <button class="nav-tab" onclick="goToSlide(7)">When to Use</button>
-      <button class="nav-tab" onclick="goToSlide(8)">Setup</button>
-      <button class="nav-tab" onclick="goToSlide(9)">Summary</button>
+      <button class="nav-tab" onclick="goToSlide(7)">Code</button>
+      <button class="nav-tab" onclick="goToSlide(8)">When to Use</button>
+      <button class="nav-tab" onclick="goToSlide(9)">Setup</button>
+      <button class="nav-tab" onclick="goToSlide(10)">Summary</button>
     </div>
     <div class="nav-controls">
       <button class="nav-btn" onclick="prevSlide()">← Prev</button>
-      <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">9</span></span>
+      <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></span>
       <button class="nav-btn" onclick="nextSlide()">Next →</button>
     </div>
   </nav>
@@ -950,8 +1024,70 @@
     </div>
   </section>
 
-  <!-- Slide 7: When to Use -->
+  <!-- Slide 7: Technical Code Example -->
   <section class="slide" id="slide-7">
+    <div class="slide-content">
+      <span class="section-label">Technical Example</span>
+      <h2>For the curious: What the code looks like 🔧</h2>
+      <p>Don't worry if this looks like gibberish — the point is to see how different the AI's answers can be. One works, one doesn't.</p>
+      
+      <div class="code-comparison">
+        <div class="code-block">
+          <div class="code-header without">
+            <span class="code-header-label">❌ Without Context7</span>
+            <span class="code-header-file">Old method (doesn't work)</span>
+          </div>
+          <pre><span class="code-comment">// AI remembers old way from 2023</span>
+<span class="code-keyword">import</span> { createClient } <span class="code-keyword">from</span> <span class="code-string">'@supabase/supabase-js'</span>
+
+<span class="code-keyword">const</span> supabase = <span class="code-function">createClient</span>(url, key)
+
+<span class="code-comment">// This method was REPLACED last year!</span>
+<span class="code-keyword">const</span> { user } = <span class="code-keyword">await</span> supabase.auth.<span class="code-function">signIn</span>({
+  email: <span class="code-string">'user@example.com'</span>,
+  password: <span class="code-string">'password'</span>
+})
+
+<span class="code-comment">// ❌ Error: signIn is not a function</span>
+<span class="code-comment">// ❌ Missing cookie handling</span>
+<span class="code-comment">// ❌ Won't work with modern Next.js</span></pre>
+        </div>
+        
+        <div class="code-block">
+          <div class="code-header with">
+            <span class="code-header-label">✓ With Context7</span>
+            <span class="code-header-file">Current method (works!)</span>
+          </div>
+          <pre><span class="code-comment">// AI fetches today's documentation</span>
+<span class="code-keyword">import</span> { createServerClient } <span class="code-keyword">from</span> <span class="code-string">'@supabase/ssr'</span>
+<span class="code-keyword">import</span> { cookies } <span class="code-keyword">from</span> <span class="code-string">'next/headers'</span>
+
+<span class="code-keyword">const</span> supabase = <span class="code-function">createServerClient</span>(url, key, {
+  cookies: { <span class="code-function">getAll</span>(), <span class="code-function">setAll</span>() }
+})
+
+<span class="code-comment">// Correct current method!</span>
+<span class="code-keyword">const</span> { data } = <span class="code-keyword">await</span> supabase.auth.<span class="code-function">signInWithPassword</span>({
+  email: <span class="code-string">'user@example.com'</span>,
+  password: <span class="code-string">'password'</span>
+})
+
+<span class="code-comment">// ✓ Uses correct package (@supabase/ssr)</span>
+<span class="code-comment">// ✓ Proper cookie handling included</span>
+<span class="code-comment">// ✓ Works on first try!</span></pre>
+        </div>
+      </div>
+      
+      <div class="analogy-card" style="margin-top: 2rem; background: rgba(251, 191, 36, 0.05); border-color: rgba(251, 191, 36, 0.3);">
+        <div class="analogy-icon">🔑</div>
+        <h4>The key difference (no coding knowledge needed)</h4>
+        <p>The left side uses <strong>signIn</strong> (old method, removed). The right side uses <strong>signInWithPassword</strong> (current method). It's like the difference between dialing a phone number that was changed vs. the current number — one connects, one doesn't.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Slide 7: When to Use -->
+  <section class="slide" id="slide-8">
     <div class="slide-content">
       <span class="section-label">Decision Guide</span>
       <h2>When should you use Context7?</h2>
@@ -992,7 +1128,7 @@
   </section>
 
   <!-- Slide 8: Setup -->
-  <section class="slide" id="slide-8">
+  <section class="slide" id="slide-9">
     <div class="slide-content">
       <span class="section-label">Getting Started</span>
       <h2>Setup: One time, then forget about it</h2>
@@ -1033,7 +1169,7 @@
   </section>
 
   <!-- Slide 9: Summary -->
-  <section class="slide" id="slide-9">
+  <section class="slide" id="slide-10">
     <div class="slide-content">
       <span class="section-label">Key Takeaways</span>
       <h2>Summary</h2>
